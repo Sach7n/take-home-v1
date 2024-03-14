@@ -13,7 +13,7 @@ interface CardContainerProps {
 
 const CardContainer: React.FC<CardContainerProps> = ({items}) => {
   const renderCard = ({item}: {item: Country}) => (
-    <Card style={{margin: 8, width: '45%'}}>
+    <Card style={{margin: 8,width: '45%'}}>
       <CustomCard {...item} />
     </Card>
   );

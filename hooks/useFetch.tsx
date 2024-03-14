@@ -6,7 +6,7 @@ type FetchDataResponse<T> = {
   error: Error | null;
 };
 
-function useFetch<T>(url: string, query: string): FetchDataResponse<T> {
+function useFetch<T>(url: string, query: string,country:string): FetchDataResponse<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorState, setErrorState] = useState<Error | null>(null);
@@ -41,7 +41,7 @@ function useFetch<T>(url: string, query: string): FetchDataResponse<T> {
     return () => {
       abortController.abort();
     };
-  }, [url, query]);
+  }, [url, query, country]);
 
   return {data, loading, error: errorState};
 }

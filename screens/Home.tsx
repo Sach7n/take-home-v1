@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Button, ScrollView} from 'react-native';
-import {RadioButton} from 'react-native-paper';
+import {View, Text, ScrollView} from 'react-native';
+import {RadioButton, Button, Title} from 'react-native-paper';
 import useFetch from '../hooks/useFetch';
 import CardContainer from '../components/CardContainer';
 import {continents} from '../constants/constants';
+import {getContinentQuery} from '../components/Queries';
 
 interface Country {
   name: string;
+  code: string;
 }
 
 interface Continent {
@@ -27,20 +29,9 @@ const Home: React.FC = () => {
   const [fetchedData, setFetchedData] = useState<Continent | null>(null);
   const [fetchButtonClicked, setFetchButtonClicked] = useState<boolean>(false);
 
-  const queryTemplate = `
-    query Query {
-      continent(code: "${selectedContinent}") {
-        countries {
-          name
-        }
-        name
-      }
-    }
-  `;
-
   const {loading, error, data, refetch} = useFetch<MyData>(
     'https://countries.trevorblades.com/graphql',
-    queryTemplate,
+    getContinentQuery(selectedContinent),
     fetchButtonClicked, // Dependency to trigger refetch
   );
 
@@ -83,23 +74,29 @@ const Home: React.FC = () => {
             />
           </View>
         ))}
+        <Button
+          mode="contained"
+          onPress={handleReset}
+          disabled={!selectedContinent}>
+          Reset
+        </Button>
       </View>
     );
   };
 
   const renderData = () => {
     if (loading) {
-      return <Text>Loading...</Text>;
+      return <Button loading={true}>Loading...</Button>;
     }
     if (error) {
       return <Text>Error: {error.message}</Text>;
     }
     if (fetchedData) {
       return (
-        <View style={{flex: 1}}>
-          <View style={{flex: 0.9}}>
-            <Text>Continent: {fetchedData.name} </Text>
-            <Text>Countries:</Text>
+        <View style={{flex: 2.2}}>
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Title>{fetchedData.name} </Title>
+            <Title>Countries:</Title>
             <View>
               <CardContainer items={fetchedData.countries} />
             </View>
@@ -111,13 +108,8 @@ const Home: React.FC = () => {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
       {renderContinentSelection()}
-      <Button
-        title="Reset"
-        onPress={handleReset}
-        disabled={!selectedContinent}
-      />
       {renderData()}
     </View>
   );
