@@ -1,11 +1,17 @@
 import React, {useEffect} from 'react';
-import { Text } from 'react-native-paper';
-
+import {Text} from 'react-native-paper';
+import {useAppContext} from '../context';
 
 const Faviroutes: React.FC<any> = () => {
-  useEffect(() => {}, []);
+  const {fav} = useAppContext();
 
-  return <Text>Hello from Favs</Text>;
+  return (
+    <>
+      {fav.map((favorite, index) => (
+        <Text key={index}>{favorite.data.name}</Text>
+      ))}
+    </>
+  );
 };
 
 export default Faviroutes;

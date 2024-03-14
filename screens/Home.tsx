@@ -5,6 +5,7 @@ import useFetch from '../hooks/useFetch';
 import CardContainer from '../components/CardContainer';
 import {continents} from '../constants/constants';
 import {getContinentQuery} from '../components/Queries';
+import {useNavigation} from '@react-navigation/native';
 
 interface Country {
   name: string;
@@ -28,6 +29,7 @@ const Home: React.FC = () => {
   const [selectedContinent, setSelectedContinent] = useState<string>('');
   const [fetchedData, setFetchedData] = useState<Continent | null>(null);
   const [fetchButtonClicked, setFetchButtonClicked] = useState<boolean>(false);
+  const navigation = useNavigation();
 
   const {loading, error, data, refetch} = useFetch<MyData>(
     'https://countries.trevorblades.com/graphql',
@@ -45,6 +47,9 @@ const Home: React.FC = () => {
     setSelectedContinent(continentCode);
   };
 
+  const handleFavs = () => {
+    navigation.navigate('Favs');
+  };
   const handleReset = () => {
     setSelectedContinent('');
     setFetchButtonClicked(false); // Reset fetch button click state
@@ -80,6 +85,9 @@ const Home: React.FC = () => {
           disabled={!selectedContinent}>
           Reset
         </Button>
+        <Button mode="contained" onPress={handleFavs}>
+          Faviroutes
+        </Button>
       </View>
     );
   };
@@ -94,7 +102,8 @@ const Home: React.FC = () => {
     if (fetchedData) {
       return (
         <View style={{flex: 2.2}}>
-          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Title>{fetchedData.name} </Title>
             <Title>Countries:</Title>
             <View>

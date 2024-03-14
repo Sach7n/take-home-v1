@@ -12,7 +12,6 @@ import {AppProvider} from './context';
 
 import Home from './screens/Home';
 import Screen2 from './screens/Screen2';
-import DrawerItem from './components/Drawer';
 import Faviroutes from './screens/Faviroutes';
 
 function App(): React.JSX.Element {
@@ -25,7 +24,6 @@ function App(): React.JSX.Element {
           <Stack.Screen name="Details" component={Screen2} />
           <Stack.Screen name="Favs" component={Faviroutes} />
         </Stack.Navigator>
-        {/* <DrawerItem /> */}
       </NavigationContainer>
     </AppProvider>
   );

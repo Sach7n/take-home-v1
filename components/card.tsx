@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, FlatList, Dimensions} from 'react-native';
-import {Card, Title, Text, Button} from 'react-native-paper';
+import {View, StyleSheet, Dimensions} from 'react-native';
+import {Card, Text, Button} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useAppContext} from '../context';
 
@@ -43,7 +43,7 @@ const CustomCard: React.FC<CardItemProps> = ({
   code,
 }: CardItemProps) => {
   const navigation = useNavigation();
-  const {setCountry} = useAppContext();
+  const {setCountry, fav, setFav, test} = useAppContext();
   const [cardHeight, setCardHeight] = useState<number | null>(null);
 
   useEffect(() => {
@@ -55,6 +55,10 @@ const CustomCard: React.FC<CardItemProps> = ({
   const handleContinentSelection = () => {
     setCountry(code);
     navigation.navigate('Details');
+  };
+
+  const handleAddToFavorites = () => {
+    setFav((prevFav) => [...prevFav, { data: { name } }]);
   };
 
   const renderCountrySelection = () => {
@@ -72,6 +76,9 @@ const CustomCard: React.FC<CardItemProps> = ({
             <Text variant="titleMedium">native: {l.native}</Text>
           </View>
         ))}
+        <Button mode="contained" onPress={handleAddToFavorites}>
+          Add to Faviroutes
+        </Button>
       </>
     );
   };
