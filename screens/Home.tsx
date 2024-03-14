@@ -3,6 +3,7 @@ import {View, Text, Button, ScrollView} from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import useFetch from '../hooks/useFetch';
 import CardContainer from '../components/CardContainer';
+import {continents} from '../constants/constants';
 
 interface Country {
   name: string;
@@ -60,21 +61,29 @@ const Home: React.FC = () => {
 
   const renderContinentSelection = () => {
     return (
-      <>
-        <RadioButton.Item
-          label="Europe (EU)"
-          value="EU"
-          status={selectedContinent === 'EU' ? 'checked' : 'unchecked'}
-          onPress={() => handleContinentSelection('EU')}
-        />
-        <RadioButton.Item
-          label="South America (SA)"
-          value="SA"
-          status={selectedContinent === 'SA' ? 'checked' : 'unchecked'}
-          onPress={() => handleContinentSelection('SA')}
-        />
-        {/* Add more continents as needed */}
-      </>
+      <View
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {continents.map(continent => (
+          <View key={continent.value} style={{width: '50%', padding: 1}}>
+            <RadioButton.Item
+              label={continent.lable}
+              value={continent.value}
+              status={
+                selectedContinent === continent.value ? 'checked' : 'unchecked'
+              }
+              key={continents.value}
+              onPress={() => handleContinentSelection(continent.value)}
+            />
+          </View>
+        ))}
+      </View>
     );
   };
 
@@ -92,7 +101,7 @@ const Home: React.FC = () => {
             <Text>Continent: {fetchedData.name} </Text>
             <Text>Countries:</Text>
             <View>
-            <CardContainer items={fetchedData.countries} />
+              <CardContainer items={fetchedData.countries} />
             </View>
           </View>
         </View>
