@@ -27,7 +27,7 @@ interface MyData {
 
 interface ContinentOption {
   value: string;
-  label: string;
+  lable: string;
 }
 
 const Home: React.FC = () => {
@@ -69,24 +69,19 @@ const Home: React.FC = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {continents.map(
-          (
-            continent: ContinentOption, // Specify ContinentOption type here
-          ) => (
-            <View key={continent.value} style={{width: '50%', padding: 1}}>
-              <RadioButton.Item
-                label={continent.label} // Change to 'label' property
-                value={continent.value}
-                status={
-                  selectedContinent === continent.value
-                    ? 'checked'
-                    : 'unchecked'
-                }
-                onPress={() => handleContinentSelection(continent.value)}
-              />
-            </View>
-          ),
-        )}
+        {continents.map((continent: ContinentOption) => (
+          <View key={continent.value} style={{width: '50%', padding: 1}}>
+            <RadioButton.Item
+              label={continent.lable}
+              value={continent.value}
+              status={
+                selectedContinent === continent.value ? 'checked' : 'unchecked'
+              }
+              key={continents.value}
+              onPress={() => handleContinentSelection(continent.value)}
+            />
+          </View>
+        ))}
         <Button
           mode="contained"
           onPress={handleReset}
