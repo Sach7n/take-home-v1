@@ -1,6 +1,6 @@
 const getCountryQuery = (code: string) => `
     query Query {
-        country(code: "${code}") {
+        country(code: "${code}") {  
           continent {
             name
           }
@@ -23,7 +23,7 @@ const getCountryQuery = (code: string) => `
 
 const getContinentQuery = (code: string) => `
     query Query {
-      continent(code: "${code}") {
+      continent(code: "${code}") { 
         countries {
           name
           code

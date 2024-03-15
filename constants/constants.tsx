@@ -5,6 +5,7 @@ const continents = [
   {lable: 'Asia', value: 'AS'},
   {lable: 'Africa', value: 'AF'},
   {lable: 'Ocenia', value: 'OC'},
+  {lable: 'Antarctica', value: 'AN'},
 ];
 
 module.exports = {continents};

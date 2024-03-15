@@ -33,7 +33,7 @@ type CountryResponse = {
   };
 };
 
-const Screen2: React.FC<CardContainerProps> = () => {
+const Details: React.FC<CardContainerProps> = () => {
   const [fetchedData, setFetchedData] = useState<CountryResponse | null>(null);
   const {country} = useAppContext();
 
@@ -69,4 +69,4 @@ const Screen2: React.FC<CardContainerProps> = () => {
   return <>{renderData()}</>;
 };
 
-export default Screen2;
+export default Details;
