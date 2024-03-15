@@ -1,39 +1,72 @@
 import React, {useState, useEffect} from 'react';
 import {Text} from 'react-native';
 import useFetch from '../hooks/useFetch';
+import {Button} from 'react-native-paper';
+import CustomCard from '../components/card';
+import {useAppContext} from '../context';
+import {getCountryQuery} from '../components/Queries';
 
+type Language = {
+  name: string;
+  native: string;
+};
+
+type State = {
+  name: string;
+};
+
+type Continent = {
+  name: string;
+};
+
+type CountryResponse = {
+  country: {
+    continent: Continent;
+    currency: string;
+    emoji: string;
+    emojiU: string;
+    languages: Language[];
+    name: string;
+    native: string;
+    phone: string;
+    states: State[];
+  };
+};
 
 const Screen2: React.FC<CardContainerProps> = () => {
-  const [fetchedData, setFetchedData] = useState<Continent | null>(null);
-  
-  const queryTemplate = `
-    query Query {
-      continent(code: "${selectedContinent}") {
-        countries {
-          name
-        }
-        name
-      }
-    }
-  `;
-  const {loading, error, data, refetch} = useFetch<MyData>(
+  const [fetchedData, setFetchedData] = useState<CountryResponse | null>(null);
+  const {country} = useAppContext();
+
+  const {loading, error, data} = useFetch<any>(
     'https://countries.trevorblades.com/graphql',
-    queryTemplate,
-    fetchButtonClicked, // Dependency to trigger refetch
+    getCountryQuery(country),
+    country,
   );
 
   useEffect(() => {
     if (data) {
-      setFetchedData(data.data.continent);
+      setFetchedData(data.data);
     }
-  }, [data]);
+  }, [data, country]);
 
+  const renderData = () => {
+    if (loading) {
+      return <Button loading={true}>Loading...</Button>;
+    }
+    if (error) {
+      return <Text>Error: {error.message}</Text>;
+    }
+    if (fetchedData && fetchedData.country) {
+      return (
+        <>
+          <CustomCard {...fetchedData.country} country={country} />
+        </>
+      );
+    }
+    return null;
+  };
 
-  return (
-    <>
-      <Text>Hello from screen 2</Text>
-    </>
-  );
+  return <>{renderData()}</>;
 };
 
 export default Screen2;

@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Button, ScrollView} from 'react-native';
-import {RadioButton} from 'react-native-paper';
+import {View, Text} from 'react-native';
+import {RadioButton, Button, Title} from 'react-native-paper';
 import useFetch from '../hooks/useFetch';
 import CardContainer from '../components/CardContainer';
 import {continents} from '../constants/constants';
+import {getContinentQuery} from '../components/Queries';
+import {useNavigation} from '@react-navigation/native';
 
 interface Country {
   name: string;
+  code: string;
 }
 
 interface Continent {
@@ -22,26 +25,20 @@ interface MyData {
   data: Data;
 }
 
+interface ContinentOption {
+  value: string;
+  lable: string;
+}
+
 const Home: React.FC = () => {
   const [selectedContinent, setSelectedContinent] = useState<string>('');
   const [fetchedData, setFetchedData] = useState<Continent | null>(null);
-  const [fetchButtonClicked, setFetchButtonClicked] = useState<boolean>(false);
+  const navigation = useNavigation();
 
-  const queryTemplate = `
-    query Query {
-      continent(code: "${selectedContinent}") {
-        countries {
-          name
-        }
-        name
-      }
-    }
-  `;
-
-  const {loading, error, data, refetch} = useFetch<MyData>(
+  const {loading, error, data} = useFetch<MyData>(
     'https://countries.trevorblades.com/graphql',
-    queryTemplate,
-    fetchButtonClicked, // Dependency to trigger refetch
+    getContinentQuery(selectedContinent),
+    '',
   );
 
   useEffect(() => {
@@ -54,9 +51,11 @@ const Home: React.FC = () => {
     setSelectedContinent(continentCode);
   };
 
+  const handleFavs = () => {
+    navigation.navigate('Favs');
+  };
   const handleReset = () => {
     setSelectedContinent('');
-    setFetchButtonClicked(false); // Reset fetch button click state
   };
 
   const renderContinentSelection = () => {
@@ -70,7 +69,7 @@ const Home: React.FC = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {continents.map(continent => (
+        {continents.map((continent: ContinentOption) => (
           <View key={continent.value} style={{width: '50%', padding: 1}}>
             <RadioButton.Item
               label={continent.lable}
@@ -83,23 +82,35 @@ const Home: React.FC = () => {
             />
           </View>
         ))}
+        <Button
+          mode="contained"
+          onPress={handleReset}
+          disabled={!selectedContinent}>
+          Reset
+        </Button>
+        <Button mode="contained" onPress={handleFavs}>
+          Faviroutes
+        </Button>
       </View>
     );
   };
 
   const renderData = () => {
     if (loading) {
-      return <Text>Loading...</Text>;
+      return <Button loading={true}>Loading...</Button>;
     }
     if (error) {
       return <Text>Error: {error.message}</Text>;
     }
     if (fetchedData) {
       return (
-        <View style={{flex: 1}}>
-          <View style={{flex: 0.9}}>
-            <Text>Continent: {fetchedData.name} </Text>
-            <Text>Countries:</Text>
+        // eslint-disable-next-line react-native/no-inline-styles
+        <View style={{flex: 2.2}}>
+          <View
+            // eslint-disable-next-line react-native/no-inline-styles
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Title>{fetchedData.name} </Title>
+            <Title>Countries:</Title>
             <View>
               <CardContainer items={fetchedData.countries} />
             </View>
@@ -111,13 +122,9 @@ const Home: React.FC = () => {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    // eslint-disable-next-line react-native/no-inline-styles
+    <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
       {renderContinentSelection()}
-      <Button
-        title="Reset"
-        onPress={handleReset}
-        disabled={!selectedContinent}
-      />
       {renderData()}
     </View>
   );
