@@ -33,4 +33,4 @@ const getContinentQuery = (code: string) => `
     }
   `;
 
-  module.exports = {getContinentQuery,getCountryQuery};
+module.exports = {getContinentQuery, getCountryQuery};

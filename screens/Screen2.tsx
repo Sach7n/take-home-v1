@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Text} from 'react-native';
 import useFetch from '../hooks/useFetch';
-import {Button, Card} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import CustomCard from '../components/card';
 import {useAppContext} from '../context';
 import {getCountryQuery} from '../components/Queries';
@@ -59,7 +59,7 @@ const Screen2: React.FC<CardContainerProps> = () => {
     if (fetchedData && fetchedData.country) {
       return (
         <>
-          <CustomCard {...fetchedData.country} country={country}/>
+          <CustomCard {...fetchedData.country} country={country} />
         </>
       );
     }

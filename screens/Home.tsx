@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text} from 'react-native';
 import {RadioButton, Button, Title} from 'react-native-paper';
 import useFetch from '../hooks/useFetch';
 import CardContainer from '../components/CardContainer';
@@ -28,13 +28,12 @@ interface MyData {
 const Home: React.FC = () => {
   const [selectedContinent, setSelectedContinent] = useState<string>('');
   const [fetchedData, setFetchedData] = useState<Continent | null>(null);
-  const [fetchButtonClicked, setFetchButtonClicked] = useState<boolean>(false);
   const navigation = useNavigation();
 
-  const {loading, error, data, refetch} = useFetch<MyData>(
+  const {loading, error, data} = useFetch<MyData>(
     'https://countries.trevorblades.com/graphql',
     getContinentQuery(selectedContinent),
-    fetchButtonClicked, // Dependency to trigger refetch
+    '',
   );
 
   useEffect(() => {
@@ -52,7 +51,6 @@ const Home: React.FC = () => {
   };
   const handleReset = () => {
     setSelectedContinent('');
-    setFetchButtonClicked(false); // Reset fetch button click state
   };
 
   const renderContinentSelection = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import {Card} from 'react-native-paper';
 import CustomCard from './card';
 
@@ -8,7 +8,7 @@ interface Country {
 }
 
 interface CardContainerProps {
-  items: Country[]; // Array of country objects
+  items: Country[];
 }
 
 const CardContainer: React.FC<CardContainerProps> = ({items}) => {

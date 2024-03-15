@@ -43,14 +43,14 @@ const CustomCard: React.FC<CardItemProps> = ({
   code,
 }: CardItemProps) => {
   const navigation = useNavigation();
-  const {setCountry, fav, setFav, test} = useAppContext();
+  const {setCountry, setFav} = useAppContext();
   const [cardHeight, setCardHeight] = useState<number | null>(null);
 
   useEffect(() => {
     const division = country && !!country.trim() ? 1 : 6;
     const {height} = Dimensions.get('window');
-    setCardHeight(height / division); // Set initial height for the card
-  }, []);
+    setCardHeight(height / division);
+  }, [country]);
 
   const handleContinentSelection = () => {
     setCountry(code);
@@ -58,7 +58,7 @@ const CustomCard: React.FC<CardItemProps> = ({
   };
 
   const handleAddToFavorites = () => {
-    setFav((prevFav) => [...prevFav, { data: { name } }]);
+    setFav(prevFav => [...prevFav, {data: {name}}]);
   };
 
   const renderCountrySelection = () => {
@@ -100,9 +100,9 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd', // Light gray border color
-    backgroundColor: '#fff', // White background color
-    elevation: 2, // Shadow depth for Android
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+    elevation: 2,
   },
 });
 

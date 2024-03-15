@@ -1,14 +1,27 @@
-import React, {useEffect} from 'react';
-import {Text} from 'react-native-paper';
+import React from 'react';
+import {Card} from 'react-native-paper';
 import {useAppContext} from '../context';
+
+type FavoriteData = {
+  name: string;
+};
+
+type Favorite = {
+  data: FavoriteData;
+};
 
 const Faviroutes: React.FC<any> = () => {
   const {fav} = useAppContext();
 
+  const uniqueFav: Favorite[] = fav.filter(
+    (favorite: Favorite, index: number, self: Favorite[]) =>
+      index === self.findIndex(f => f.data.name === favorite.data.name),
+  );
+
   return (
     <>
-      {fav.map((favorite, index) => (
-        <Text key={index}>{favorite.data.name}</Text>
+      {uniqueFav.map((favorite: Favorite, index: number) => (
+        <Card.Title key={index} title={favorite.data.name} />
       ))}
     </>
   );
