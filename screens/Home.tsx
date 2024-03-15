@@ -25,6 +25,11 @@ interface MyData {
   data: Data;
 }
 
+interface ContinentOption {
+  value: string;
+  label: string;
+}
+
 const Home: React.FC = () => {
   const [selectedContinent, setSelectedContinent] = useState<string>('');
   const [fetchedData, setFetchedData] = useState<Continent | null>(null);
@@ -64,19 +69,24 @@ const Home: React.FC = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {continents.map(continent => (
-          <View key={continent.value} style={{width: '50%', padding: 1}}>
-            <RadioButton.Item
-              label={continent.lable}
-              value={continent.value}
-              status={
-                selectedContinent === continent.value ? 'checked' : 'unchecked'
-              }
-              key={continents.value}
-              onPress={() => handleContinentSelection(continent.value)}
-            />
-          </View>
-        ))}
+        {continents.map(
+          (
+            continent: ContinentOption, // Specify ContinentOption type here
+          ) => (
+            <View key={continent.value} style={{width: '50%', padding: 1}}>
+              <RadioButton.Item
+                label={continent.label} // Change to 'label' property
+                value={continent.value}
+                status={
+                  selectedContinent === continent.value
+                    ? 'checked'
+                    : 'unchecked'
+                }
+                onPress={() => handleContinentSelection(continent.value)}
+              />
+            </View>
+          ),
+        )}
         <Button
           mode="contained"
           onPress={handleReset}
@@ -99,8 +109,10 @@ const Home: React.FC = () => {
     }
     if (fetchedData) {
       return (
+        // eslint-disable-next-line react-native/no-inline-styles
         <View style={{flex: 2.2}}>
           <View
+            // eslint-disable-next-line react-native/no-inline-styles
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Title>{fetchedData.name} </Title>
             <Title>Countries:</Title>
@@ -115,6 +127,7 @@ const Home: React.FC = () => {
   };
 
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
       {renderContinentSelection()}
       {renderData()}
