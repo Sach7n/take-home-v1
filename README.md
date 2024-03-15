@@ -49,12 +49,12 @@ Custom hook to that accepts
 1. Custom url,
 2. Query
 3. A dependency string (can be random, to force hook to run afain)
-   and returns 3 states.
-4. loading when request is not completed
-5. data if request is success
-6. Error if there was an error
+####  and returns 3 states.
+1. loading when request is not completed
+2. data if request is success
+3. Error if there was an error
 
-### card container and ### custom card
+### card container and custom card
 
 Card container accepts an array and passes the values to custom card that would display the values
 
